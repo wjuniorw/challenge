@@ -2,9 +2,11 @@
   "name": "bossabox-beckend-challenge",
   "version": "1.0.0",
   "description": "Desafio beck-end do bossabox",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon --exec babel-node src",
+    "build": "babel src -d dist",
+    "serve": "node dist/index.js"
   },
   "keywords": [
     "challenge",
