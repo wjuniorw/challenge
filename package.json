@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon --exec babel-node src",
     "build": "babel src -d dist",
-    "serve": "node dist/index.js"
+    "serve": "node dist"
   },
   "keywords": [
     "challenge",
@@ -27,6 +27,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "graphql": "^14.0.2",
+    "merge-graphql-schemas": "^1.5.8",
     "mongoose": "^5.3.16"
   }
 }
