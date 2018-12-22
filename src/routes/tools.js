@@ -4,7 +4,7 @@ export default (app, { Tools }) => {
     .get(async (req, res, next) => {
       const { tag } = req.query
       // get all tools or tools by tags
-      let query = !!tag ? { tags: tag } : {}
+      let query = !!tag ? { tags: { $regex: tag, $options: 'i' } } : {}
       const tools = await Tools.find(query)
 
       return res.send(tools)
@@ -27,7 +27,8 @@ export default (app, { Tools }) => {
       }
     })
 
-  app.route('/tools/:_id')
+  app
+    .route('/tools/:_id')
     .get(async (req, res, next) => {
       const { _id } = req.params
       // get one tool by id
@@ -36,10 +37,13 @@ export default (app, { Tools }) => {
       return res.send(tool)
     })
     .put(async (req, res) => {
-      const { params: { _id }, body } = req
+      const {
+        params: { _id },
+        body,
+      } = req
 
       try {
-        const tool = await Tools.findByIdAndUpdate( _id, body, { new: true })
+        const tool = await Tools.findByIdAndUpdate(_id, body, { new: true })
         return res.send({
           ok: true,
           tool,
