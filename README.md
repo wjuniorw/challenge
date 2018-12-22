@@ -29,7 +29,7 @@ Go To: <http://localhost:3000/>
 
 **get all tools:**
 
-#### GET `/tool`
+#### GET `/tools`
 
 - Response 200 (text/json)
 - Array com todas ferramentas:
@@ -57,7 +57,7 @@ Go To: <http://localhost:3000/>
 
 **get tools by tag:**
 
-#### GET `/tool?tag=nodejs`
+#### GET `/tools?tag=nodejs`
 
 - Array com todas ferramentas com a tag :
 - Response 200 (text/json)
@@ -178,3 +178,140 @@ Go To: <http://localhost:3000/>
     message: 'Success'
   }
 ```
+
+---
+
+# GraphQL Querys e Mutations
+
+Go To: <http://localhost:3000/graphql>
+
+** query get all tools:**
+
+```
+query {
+  tools {
+    id title link description tags
+  }
+}
+```
+
+---
+
+** query get tools by tag:**
+
+```js
+query byTag($tag: String){
+  tools(tags: $tag) {
+    id title link description tags
+  }
+}
+//ou mais de uma tag
+query byTags($tags: [String]){
+  tools(tags: $tags) {
+    id title link description tags
+  }
+}
+```
+
+---
+
+** query get one tool:**
+
+```js
+query getTool($id: ID){
+  tool(_id: $id) {
+    id title link description tags
+  }
+}
+```
+
+---
+
+** Mutation Add tool:**
+
+```js
+mutation {
+  addTool(data: {
+    title: "Teste"
+    link:"http://teste"
+    description:" teste."
+    tags: ["Graphql", "nodejs", "query", "teste"]
+  }) {
+    title link tags description
+  }
+}
+// dinamic params...
+const ADD_TOOL = gql`
+mutation AddNewTool(
+  $title: String
+  $link: String
+  $dercription: String
+  $tags: [String]
+) {
+  addTool(
+    data: {
+       title: $title link: $link
+       description: $dercription tags: $tags
+    }
+  ) {
+    title link tags description
+  }
+}`
+```
+
+---
+
+** Mutation Update tool:**
+
+```js
+mutation {
+  updTool(_id:"5c1e71677c2d5c0285f5ec6a" data: {
+    title: "Teste"
+    link:"http://teste"
+    description:" teste."
+    tags: ["Graphql", "nodejs", "query", "teste"]
+  }) {
+    title link tags description
+  }
+}
+// dinamic params...
+const UPD_TOOL = gql`
+mutation UpdateTool(
+  $id: ID
+  $title: String
+  $link: String
+  $dercription: String
+  $tags: [String]
+) {
+  updTool(
+    _id: $id
+    data: {
+       title: $title link: $link
+       description: $dercription tags: $tags
+    }
+  ) {
+    title link tags description
+  }
+}`
+```
+
+---
+
+** Mutation delete tool:**
+
+```js
+mutation {
+  removeTool(_id:"5c1e721a7c2d5c0285f5ec6b") {
+    ok message
+  }
+}
+// dinamic params...
+const DEL_TOOL = gql`
+mutation remove($id: ID) {
+  removeTool(_id: $id) {
+    ok message
+  }
+}`
+```
+
+---
