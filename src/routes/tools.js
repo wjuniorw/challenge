@@ -2,9 +2,9 @@ export default (app, { Tools }) => {
   app
     .route('/tools')
     .get(async (req, res, next) => {
-      const { tags } = req.query
+      const { tag } = req.query
       // get all tools or tools by tags
-      let query = !!tags ? { tags } : {}
+      let query = !!tag ? { tags: tag } : {}
       const tools = await Tools.find(query)
 
       return res.send(tools)
@@ -12,24 +12,64 @@ export default (app, { Tools }) => {
     .post(async (req, res, next) => {
       const { body } = req
       try {
-        // console.log('body from client...', body)
         const newTool = new Tools(body)
         const tool = await newTool.save()
 
-        return res.send({
-          ok: true,
-          tool,
-        })
+        return res.send(tool)
       } catch (e) {
-        console.log('Erro new Tool...', e.message)
         return res.send(
           {
             ok: false,
-            message: 'Erro!',
+            message: `Erro! ${e.message}`,
           },
           500
         )
       }
     })
-    .delete()
+
+  app.route('/tools/:_id')
+    .get(async (req, res, next) => {
+      const { _id } = req.params
+      // get one tool by id
+      const tool = await Tools.findOne({ _id })
+
+      return res.send(tool)
+    })
+    .put(async (req, res) => {
+      const { params: { _id }, body } = req
+
+      try {
+        const tool = await Tools.findByIdAndUpdate( _id, body, { new: true })
+        return res.send({
+          ok: true,
+          tool,
+        })
+      } catch (e) {
+        return res.send(
+          {
+            ok: false,
+            message: `Erro! ${e.message}`,
+          },
+          500
+        )
+      }
+    })
+    .delete(async (req, res) => {
+      const { _id } = req.params
+      try {
+        await Tools.deleteOne({ _id })
+        return res.send({
+          ok: true,
+          message: 'Success',
+        })
+      } catch (e) {
+        return res.send(
+          {
+            ok: false,
+            message: 'Error!',
+          },
+          500
+        )
+      }
+    })
 }
