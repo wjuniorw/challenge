@@ -27,5 +27,6 @@ const server = new ApolloServer({
 server.applyMiddleware({ app })
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em: http://localhost:${PORT}/graphql`)
+  console.log(`Api REST rodando em: http://localhost:${PORT}`)
+  console.log(`Api GraphQL rodando em: http://localhost:${PORT}/graphql`)
 })
