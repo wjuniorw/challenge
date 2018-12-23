@@ -31,14 +31,71 @@ Go To: <http://localhost:3000/>
 
 # Rotas REST
 
+**Signup :**
+
+#### POST `/signup`
+
+- **Body Params:**
+  <br/>
+
+  - `name: String`
+
+  - `email: String`
+    <br/>
+  - `password: String`
+
+- **Response** 200 (text/json):
+
+```json
+{
+  "ok": true,
+  "user": {
+    "_id": "5c1f9b7a0ebbeb79b905da03",
+    "name": "username",
+    "email": "user@mail.com"
+  }
+}
+```
+
+**Login :**
+
+#### POST `/login`
+
+- **Body Params:**
+  <br/>
+
+  - `email: String`
+
+  - `password: String`
+    <br/>
+
+- **Response** 200 (text/json):
+
+```json
+{
+  "ok": true,
+  "user": {
+    "admin": false,
+    "_id": "5c1f9b7a0ebbeb79b905da03",
+    "email": "wjunior@mail.com",
+    "password": "$2a$10$1WRaTAv1ypCV9RpZuJYG4uXl2r3xsmC/JLopK/eIqEDWjGn8HE4o6",
+    "name": "wjunior",
+    "__v": 0
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVjMWY5YjdhMGViYmViNzliOTA1ZGEwMyIsImFkbWluIjpmYWxzZX0sImlhdCI6MTU0NTU5MTc0MSwiZXhwIjoxNTQ1NTkyNjQxfQ.FognqGhLsniUjOsCh2-Q8FIHwHVfxIXVdljK5vw8Uvo"
+}
+```
+
 **get all tools:**
 
 #### GET `/tools`
 
+- header: `{ auth-token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }`
+
 - Response 200 (text/json)
 - Array com todas ferramentas:
 
-```
+```json
  [
      {
        "tags": [
@@ -64,8 +121,9 @@ Go To: <http://localhost:3000/>
 
 #### GET `/tools?tag=nodejs`
 
-- Array com todas ferramentas com a tag :
+- header: `{ auth-token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }`
 - Response 200 (text/json)
+- Array com todas ferramentas com a tag :
 
 ```
   [
@@ -90,8 +148,9 @@ Go To: <http://localhost:3000/>
 
 #### GET `/tools/:id` EX: `/tools/5c1e71677c2d5c0285f5ec6a`
 
-- Array com todas ferramentas com a tag :
+- header: `{ auth-token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }`
 - Response 200 (text/json) :
+- Array com todas ferramentas com a tag :
 
 ```
   {
@@ -113,7 +172,8 @@ Go To: <http://localhost:3000/>
 
 #### POST `/tools`
 
-- ** Body Params:**
+- **header**: `{ auth-token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }`
+- **Body Params:**
   <br/>
   `title: String`
   <br/>
@@ -138,8 +198,9 @@ Go To: <http://localhost:3000/>
 
 **Update Tool :**
 
-#### PUT `/tools/:id Ex:/tools/5c1e71677c2d5c0285f5ec6a`
+#### PUT `/tools/:id` `Ex:/tools/5c1e71677c2d5c0285f5ec6a`
 
+- **header**: `{ auth-token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }`
 - **Body Params:**
   <br/>
   `title: String`
@@ -166,8 +227,9 @@ Go To: <http://localhost:3000/>
 
 **DELETE Tool :**
 
-#### DELETE `/tools/:id Ex:/tools/5c1e71677c2d5c0285f5ec6a`
+#### DELETE `/tools/:id` `Ex:/tools/5c1e71677c2d5c0285f5ec6a`
 
+- **header:** `{ auth-token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }`
 - Response 200 (text/json):
 
 ```js
