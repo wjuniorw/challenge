@@ -48,7 +48,7 @@ Go To: <http://localhost:3000/>
          "nosql"
        ],
        "_id": "5c1d70ae51aab831fa58b862",
-       "description": "ORM para mongoDB, mongosse um orm para usar o mongodb com nodejs",
+       "description": "ORM para mongoDB, mongoose um orm para usar o mongodb com nodejs",
        "link": "https://mongoosejs.com/",
        "title": "mongoose"
      },
@@ -204,6 +204,9 @@ Go To: <http://localhost:3000/graphql>
 tools(tags: "GraphQL") {
   id title link description tags
 }
+tools(tags: ["GraphQL", "babel"]) {
+  id title link description tags
+}
 
 //exemplo de uso no apollo-client
 query byTag($tag: String){
@@ -244,6 +247,7 @@ gql`query getTool($id: ID){
 **Mutation Add tool:**
 
 ```js
+//exemplo de uso no GraphQL Playground
 mutation {
   addTool(data: {
     title: "Teste"
@@ -254,7 +258,7 @@ mutation {
     title link tags description
   }
 }
-// dinamic params...
+//exemplo de uso no apollo-client
 const ADD_TOOL = gql`
 mutation AddNewTool(
   $title: String
@@ -278,6 +282,7 @@ mutation AddNewTool(
 **Mutation Update tool:**
 
 ```js
+//exemplo de uso no GraphQL Playground
 mutation {
   updTool(_id:"5c1e71677c2d5c0285f5ec6a" data: {
     title: "Teste"
@@ -288,7 +293,7 @@ mutation {
     title link tags description
   }
 }
-// dinamic params...
+//exemplo de uso no apollo-client
 const UPD_TOOL = gql`
 mutation UpdateTool(
   $id: ID
@@ -314,12 +319,13 @@ mutation UpdateTool(
 **Mutation delete tool:**
 
 ```js
+//exemplo de uso no GraphQL Playground
 mutation {
   removeTool(_id:"5c1e721a7c2d5c0285f5ec6b") {
     ok message
   }
 }
-// dinamic params...
+//exemplo de uso no apollo-client
 const DEL_TOOL = gql`
 mutation remove($id: ID) {
   removeTool(_id: $id) {

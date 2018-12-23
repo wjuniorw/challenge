@@ -1,12 +1,12 @@
 import express from 'express'
-import { ApolloServer, gql } from 'apollo-server-express'
+import { ApolloServer } from 'apollo-server-express'
 import cors from 'cors'
 
 const app = express()
 const PORT = process.env.PORT || 3000
 
 app.use(express.json())
-app.use(cors('*'))
+app.use(cors())
 
 import routes from './routes'
 import db from './db'
@@ -27,5 +27,5 @@ const server = new ApolloServer({
 server.applyMiddleware({ app })
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em: http://localhost:${PORT}`)
+  console.log(`Servidor rodando em: http://localhost:${PORT}/graphql`)
 })

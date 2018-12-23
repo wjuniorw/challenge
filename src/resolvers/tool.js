@@ -5,7 +5,6 @@ export default {
       return Tools.find(query)
     },
     tool: async (root, args, { db: { Tools } }) => {
-      // const query = args.tags ? { tags: { $in: args.tags } } : {}
       return Tools.findOne(args)
     },
   },
