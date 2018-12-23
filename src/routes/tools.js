@@ -1,3 +1,5 @@
+import { authDelete, authUpdate, authCreate } from '../services/authorization'
+
 export default (app, { Tools }) => {
   app
     .route('/tools')
@@ -11,20 +13,12 @@ export default (app, { Tools }) => {
     })
     .post(async (req, res, next) => {
       const { body, user } = req
-      body.owner = user._id
-      try {
-        const newTool = new Tools(body)
-        const tool = await newTool.save()
-
-        return res.send(tool)
-      } catch (e) {
-        return res.send(
-          {
-            ok: false,
-            message: `Erro! ${e.message}`,
-          },
-          500
-        )
+      const resp = await authCreate(user, body, Tools)
+      if (resp.ok) {
+        res.send(resp.tool)
+      }
+      if (!resp.ok) {
+        res.status(400).send(resp)
       }
     })
 
@@ -45,32 +39,13 @@ export default (app, { Tools }) => {
       } = req
 
       const oldTool = await Tools.findById(_id)
+      const resp = await authUpdate(user, oldTool, body, Tools)
 
-      if (oldTool.owner === user._id || user.admin) {
-        try {
-          const tool = await Tools.findByIdAndUpdate(_id, body, { new: true })
-          return res.send({
-            ok: true,
-            tool,
-          })
-        } catch (e) {
-          return res.send(
-            {
-              ok: false,
-              message: `Erro! ${e.message}`,
-            },
-            500
-          )
-        }
+      if (resp.ok) {
+        return res.send(resp)
       }
-      if (oldTool.owner !== user._id && !user.admin) {
-        return res.send(
-          {
-            ok: false,
-            message: `Erro!, voce nao pode editar essa ferramenta, permissao negada!`,
-          },
-          401
-        )
+      if (!resp.ok) {
+        return res.status(401).send(resp)
       }
     })
     .delete(async (req, res) => {
@@ -79,31 +54,18 @@ export default (app, { Tools }) => {
         params: { _id },
       } = req
       const tool = await Tools.findById(_id)
-      if (oldTool.owner === user._id || user.admin) {
-        try {
-          await Tools.deleteOne({ _id })
-          return res.send({
-            ok: true,
-            message: 'Success',
-          })
-        } catch (e) {
-          return res.send(
-            {
-              ok: false,
-              message: 'Error!',
-            },
-            500
-          )
-        }
+      if (!tool) {
+        return res.status(400).send({
+          message: 'ferramenta nao existe',
+        })
       }
-      if (tool.owner !== user._id) {
-        return res.send(
-          {
-            ok: false,
-            message: `Erro!, voce nao pode editar essa ferramenta, permissao negada!`,
-          },
-          401
-        )
+      const resp = await authDelete(user, tool, Tools)
+
+      if (resp.ok) {
+        return res.send(resp)
+      }
+      if (!resp.ok) {
+        return res.status(401).send(resp)
       }
     })
 }

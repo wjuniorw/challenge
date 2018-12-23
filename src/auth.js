@@ -12,7 +12,7 @@ export const createToken = async ({ _id, admin = false }, secret) => {
     secret,
     {
       // expiresIn: '1h',
-      expiresIn: 5 * 60, //5 minutos
+      expiresIn: 15 * 60, //5 minutos
     }
   )
   return token
