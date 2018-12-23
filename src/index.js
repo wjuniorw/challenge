@@ -15,9 +15,11 @@ routes(app, db)
 
 import typeDefs from './schema'
 import resolvers from './resolvers'
-const context = {
+const context = ({ req, res }) => ({
   db,
-}
+  user: req.user,
+  token: req.headers['auth-token'],
+})
 
 const server = new ApolloServer({
   typeDefs,

@@ -24,9 +24,11 @@
   },
   "dependencies": {
     "apollo-server-express": "^2.3.0",
+    "bcrypt-nodejs": "0.0.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "graphql": "^14.0.2",
+    "jsonwebtoken": "^8.4.0",
     "merge-graphql-schemas": "^1.5.8",
     "mongoose": "^5.3.16"
   }
