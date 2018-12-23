@@ -10,7 +10,8 @@ export default (app, { Tools }) => {
       return res.send(tools)
     })
     .post(async (req, res, next) => {
-      const { body } = req
+      const { body, user } = req
+      body.owner = user._id
       try {
         const newTool = new Tools(body)
         const tool = await newTool.save()
@@ -40,39 +41,68 @@ export default (app, { Tools }) => {
       const {
         params: { _id },
         body,
+        user,
       } = req
 
-      try {
-        const tool = await Tools.findByIdAndUpdate(_id, body, { new: true })
-        return res.send({
-          ok: true,
-          tool,
-        })
-      } catch (e) {
+      const oldTool = await Tools.findById(_id)
+
+      if (oldTool.owner === user._id || user.admin) {
+        try {
+          const tool = await Tools.findByIdAndUpdate(_id, body, { new: true })
+          return res.send({
+            ok: true,
+            tool,
+          })
+        } catch (e) {
+          return res.send(
+            {
+              ok: false,
+              message: `Erro! ${e.message}`,
+            },
+            500
+          )
+        }
+      }
+      if (oldTool.owner !== user._id && !user.admin) {
         return res.send(
           {
             ok: false,
-            message: `Erro! ${e.message}`,
+            message: `Erro!, voce nao pode editar essa ferramenta, permissao negada!`,
           },
-          500
+          401
         )
       }
     })
     .delete(async (req, res) => {
-      const { _id } = req.params
-      try {
-        await Tools.deleteOne({ _id })
-        return res.send({
-          ok: true,
-          message: 'Success',
-        })
-      } catch (e) {
+      const {
+        user,
+        params: { _id },
+      } = req
+      const tool = await Tools.findById(_id)
+      if (oldTool.owner === user._id || user.admin) {
+        try {
+          await Tools.deleteOne({ _id })
+          return res.send({
+            ok: true,
+            message: 'Success',
+          })
+        } catch (e) {
+          return res.send(
+            {
+              ok: false,
+              message: 'Error!',
+            },
+            500
+          )
+        }
+      }
+      if (tool.owner !== user._id) {
         return res.send(
           {
             ok: false,
-            message: 'Error!',
+            message: `Erro!, voce nao pode editar essa ferramenta, permissao negada!`,
           },
-          500
+          401
         )
       }
     })

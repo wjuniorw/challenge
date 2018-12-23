@@ -4,6 +4,10 @@ const { Schema } = mongoose
 const Tools = mongoose.model(
   'tools',
   Schema({
+    owner: {
+      type: String,
+      required: true,
+    },
     tags: Array,
     link: {
       type: String,
