@@ -1,6 +1,7 @@
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import cors from 'cors'
+import { addUser } from './auth'
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -8,6 +9,7 @@ const SECRET = process.env.SECRET || 'secret@Development'
 
 app.use(express.json())
 app.use(cors())
+app.use(addUser)
 app.set('SECRET', SECRET)
 
 import routes from './routes'

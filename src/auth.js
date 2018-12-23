@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt-nodejs'
 import validate from './services/validateSignup'
 
-const SECRET = process.env.SECRET || 'secret@user'
+const SECRET = process.env.SECRET || 'secret@Development'
 
 export const createToken = async ({ _id, admin = false }, secret) => {
   const token = await jwt.sign(
@@ -11,6 +11,7 @@ export const createToken = async ({ _id, admin = false }, secret) => {
     },
     secret,
     {
+      // expiresIn: '1h',
       expiresIn: 5 * 60, //5 minutos
     }
   )
