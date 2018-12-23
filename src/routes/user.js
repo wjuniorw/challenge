@@ -1,4 +1,4 @@
-import { login } from '../auth'
+import { login, signup } from '../auth'
 
 export default (app, { User }) => {
   const SECRET = app.get('SECRET')
@@ -11,6 +11,18 @@ export default (app, { User }) => {
     }
     if (!resp.ok) {
       return res.send(resp, 400)
+    }
+  })
+  // cadastro de usuario...
+  app.post('/signup', async (req, res, next) => {
+    const resp = await signup(req.body, User, SECRET)
+
+    if (resp.ok) {
+      return res.send(resp)
+    }
+    if (!resp.ok) {
+      // return res.send(resp, 400)
+      return res.status(400).send(resp)
     }
   })
 

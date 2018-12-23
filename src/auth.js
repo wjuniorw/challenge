@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt-nodejs'
+import validate from './services/validateSignup'
+
 const SECRET = process.env.SECRET || 'secret@user'
 
 export const createToken = async ({ _id, admin = false }, secret) => {
@@ -15,7 +17,41 @@ export const createToken = async ({ _id, admin = false }, secret) => {
   return token
 }
 
+export const signup = async (body, User) => {
+  const { email, password } = body
+
+  const user = await User.findOne({ email })
+  const errors = validate(email, password, user)
+
+  if (errors.length) {
+    return {
+      ok: false,
+      errors,
+    }
+  }
+  const passhash = bcrypt.hashSync(password)
+  body.password = passhash
+
+  const newUser = new User(body)
+  try {
+    const user = await newUser.save()
+    return {
+      ok: true,
+      user,
+    }
+  } catch (e) {
+    return {
+      ok: false,
+      message: e.message,
+    }
+  }
+}
+
 export const login = async ({ email, password }, User, secret) => {
+  if (typeof password !== String) {
+    password = JSON.stringify(password)
+  }
+
   const user = await User.findOne({ email })
   if (!user) {
     return {
