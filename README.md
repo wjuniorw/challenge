@@ -2,6 +2,14 @@
 
 ---
 
+## **Requisitos para rodar a aplicacao:**
+
+- nodejs
+- npm
+- mongoDB
+
+---
+
 **Rodando aplicacao em modo Dev:**
 
     npm i
@@ -17,10 +25,6 @@ Go To => <http://localhost:3000/>
 
     npm run serve
 
-**Serve:**
-
-    npm run serve
-
 Go To: <http://localhost:3000/>
 
 ---
@@ -33,25 +37,26 @@ Go To: <http://localhost:3000/>
 
 - Response 200 (text/json)
 - Array com todas ferramentas:
-- ```
-  [
-      {
-        "tags": [
-          "nodejs",
-          "mongodb",
-          "mongoose",
-          "nosql"
-        ],
-        "_id": "5c1d70ae51aab831fa58b862",
-        "description": "ORM para mongoDB, mongosse um orm para usar o mongodb com nodejs",
-        "link": "https://mongoosejs.com/",
-        "title": "mongoose"
-      },
-      {
-        ...
-      }
-  ]
-  ```
+
+```
+ [
+     {
+       "tags": [
+         "nodejs",
+         "mongodb",
+         "mongoose",
+         "nosql"
+       ],
+       "_id": "5c1d70ae51aab831fa58b862",
+       "description": "ORM para mongoDB, mongosse um orm para usar o mongodb com nodejs",
+       "link": "https://mongoosejs.com/",
+       "title": "mongoose"
+     },
+     {
+       ...
+     }
+ ]
+```
 
 ---
 
@@ -61,7 +66,8 @@ Go To: <http://localhost:3000/>
 
 - Array com todas ferramentas com a tag :
 - Response 200 (text/json)
-- ```
+
+```
   [
     {
       "_id": "5c1e71677c2d5c0285f5ec6a",
@@ -76,7 +82,7 @@ Go To: <http://localhost:3000/>
    },
    { title: 'tool'... }, {...}
   ]
-  ```
+```
 
 ---
 
@@ -119,16 +125,12 @@ Go To: <http://localhost:3000/>
 
 - Response 200 (text/json):
 
-```
+```json
 {
   "title": "A query language for your API",
   "link": "http://graphql.github.io/",
-  "tags": [
-    "Graphql",
-    "nodejs",
-    "query"
-  ],
-  "description": "GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. GraphQL provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools.",
+  "tags": ["Graphql", "nodejs", "query"],
+  "description": "GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. GraphQL provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools."
 }
 ```
 
@@ -138,7 +140,7 @@ Go To: <http://localhost:3000/>
 
 #### PUT `/tools/:id Ex:/tools/5c1e71677c2d5c0285f5ec6a`
 
-- ** Body Params:**
+- **Body Params:**
   <br/>
   `title: String`
   <br/>
@@ -150,19 +152,15 @@ Go To: <http://localhost:3000/>
 
 - Response 200 (text/json):
 
-- ```
-  {
-      "_id": "5c1e71677c2d5c0285f5ec6a",
-      "title": "A query language for your API",
-      "link": "http://graphql.github.io/",
-      "tags": [
-        "Graphql",
-        "nodejs",
-        "query"
-      ],
-      "description": "GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. GraphQL provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools.",
-  }
-  ```
+```json
+{
+  "_id": "5c1e71677c2d5c0285f5ec6a",
+  "title": "A query language for your API",
+  "link": "http://graphql.github.io/",
+  "tags": ["Graphql", "nodejs", "query"],
+  "description": "GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. GraphQL provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools."
+}
+```
 
 ---
 
@@ -172,7 +170,7 @@ Go To: <http://localhost:3000/>
 
 - Response 200 (text/json):
 
-```
+```js
   {
     ok: true,
     message: 'Success'
@@ -185,10 +183,12 @@ Go To: <http://localhost:3000/>
 
 Go To: <http://localhost:3000/graphql>
 
-** query get all tools:**
+**query get all tools:**
 
-```
-query {
+```js
+//exemplo de uso no GraphQL Playground
+
+{
   tools {
     id title link description tags
   }
@@ -197,9 +197,15 @@ query {
 
 ---
 
-** query get tools by tag:**
+**query get tools by tag:**
 
 ```js
+//exemplo de uso no GraphQL Playground
+tools(tags: "GraphQL") {
+  id title link description tags
+}
+
+//exemplo de uso no apollo-client
 query byTag($tag: String){
   tools(tags: $tag) {
     id title link description tags
@@ -211,30 +217,38 @@ query byTags($tags: [String]){
     id title link description tags
   }
 }
+
 ```
 
 ---
 
-** query get one tool:**
+**query get one tool:**
 
 ```js
-query getTool($id: ID){
-  tool(_id: $id) {
+//exemplo de uso no GraphQL Playground
+{
+  tool(_id: "5c1e71677c2d5c0285f5ec6a") {
     id title link description tags
   }
 }
+//exemplo de uso no apollo-client
+gql`query getTool($id: ID){
+  tool(_id: $id) {
+    id title link description tags
+  }
+}`
 ```
 
 ---
 
-** Mutation Add tool:**
+**Mutation Add tool:**
 
 ```js
 mutation {
   addTool(data: {
     title: "Teste"
     link:"http://teste"
-    description:" teste."
+    description:"teste....."
     tags: ["Graphql", "nodejs", "query", "teste"]
   }) {
     title link tags description
@@ -261,7 +275,7 @@ mutation AddNewTool(
 
 ---
 
-** Mutation Update tool:**
+**Mutation Update tool:**
 
 ```js
 mutation {
@@ -297,7 +311,7 @@ mutation UpdateTool(
 
 ---
 
-** Mutation delete tool:**
+**Mutation delete tool:**
 
 ```js
 mutation {
