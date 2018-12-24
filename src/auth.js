@@ -12,7 +12,7 @@ export const createToken = async ({ _id, admin = false }, secret) => {
     secret,
     {
       // expiresIn: '1h',
-      expiresIn: 15 * 60, //5 minutos
+      expiresIn: '15 minutes',
     }
   )
   return token
@@ -53,7 +53,7 @@ export const login = async ({ email, password }, User, secret) => {
     password = JSON.stringify(password)
   }
 
-  const user = await User.findOne({ email })
+  const user = await User.findOne({ email }).select('+password')
   if (!user) {
     return {
       ok: false,
@@ -92,4 +92,15 @@ export const addUser = (req, res, next) => {
     }
   }
   next()
+}
+export const logedIn = (req, res, next) => {
+  const token = req.headers['auth-token']
+  if (!token) {
+    return res
+      .status(401)
+      .send({ message: 'Faça login para acessar essa area! ;-)' })
+  }
+  if (token) {
+    next()
+  }
 }

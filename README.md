@@ -79,8 +79,7 @@ Go To: <http://localhost:3000/>
     "_id": "5c1f9b7a0ebbeb79b905da03",
     "email": "wjunior@mail.com",
     "password": "$2a$10$1WRaTAv1ypCV9RpZuJYG4uXl2r3xsmC/JLopK/eIqEDWjGn8HE4o6",
-    "name": "wjunior",
-    "__v": 0
+    "name": "wjunior"
   },
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVjMWY5YjdhMGViYmViNzliOTA1ZGEwMyIsImFkbWluIjpmYWxzZX0sImlhdCI6MTU0NTU5MTc0MSwiZXhwIjoxNTQ1NTkyNjQxfQ.FognqGhLsniUjOsCh2-Q8FIHwHVfxIXVdljK5vw8Uvo"
 }
@@ -90,7 +89,12 @@ Go To: <http://localhost:3000/>
 
 #### GET `/tools`
 
-- header: `{ auth-token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }`
+- **header:** `{ auth-token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }`
+- **query Params:**
+
+  - `/tools?q=ORM para mongoDB`
+
+  - `/tools?tag=mongoose`
 
 - Response 200 (text/json)
 - Array com todas ferramentas:

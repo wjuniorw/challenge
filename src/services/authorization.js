@@ -23,7 +23,7 @@ export const authDelete = async (user, { _id, owner }, Model) => {
   if (owner !== user._id) {
     return {
       ok: false,
-      message: `Erro!, voce nao pode editar essa ferramenta, permissao negada!`,
+      message: `Erro!, voce nao pode excluir essa ferramenta, permissao negada!`,
     }
   }
 }

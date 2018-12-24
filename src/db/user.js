@@ -7,7 +7,10 @@ const User = mongoose.model(
   Schema({
     name: String,
     email: String,
-    password: String,
+    password: {
+      type: String,
+      select: false,
+    },
     admin: {
       type: Boolean,
       default: false,

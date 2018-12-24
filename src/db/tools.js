@@ -8,7 +8,10 @@ const Tools = mongoose.model(
       type: String,
       required: true,
     },
-    tags: Array,
+    tags: {
+      type: Array,
+      text: true,
+    },
     link: {
       type: String,
       required: true,
@@ -16,10 +19,12 @@ const Tools = mongoose.model(
     title: {
       type: String,
       required: true,
+      text: true,
     },
     description: {
       type: String,
       required: true,
+      text: true,
     },
   })
 )
