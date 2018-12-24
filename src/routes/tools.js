@@ -1,17 +1,25 @@
 import { authDelete, authUpdate, authCreate } from '../services/authorization'
+import { logedIn } from '../auth'
 
 export default (app, { Tools }) => {
   app
     .route('/tools')
-    .get(async (req, res, next) => {
-      const { tag } = req.query
-      // get all tools or tools by tags
-      let query = !!tag ? { tags: { $regex: tag, $options: 'i' } } : {}
-      const tools = await Tools.find(query)
+    .get(logedIn, async (req, res, next) => {
+      const { tag, q } = req.query
+      if (!!tag) {
+        let query = { tags: { $regex: tag, $options: 'i' } }
+        const tools = await Tools.find(query)
+        return res.send(tools)
+      }
+      if (!!q) {
+        const tools = await Tools.find({ $text: { $search: q } })
+        return res.send(tools)
+      }
 
+      const tools = await Tools.find({})
       return res.send(tools)
     })
-    .post(async (req, res, next) => {
+    .post(logedIn, async (req, res, next) => {
       const { body, user } = req
       const resp = await authCreate(user, body, Tools)
       if (resp.ok) {
@@ -24,14 +32,14 @@ export default (app, { Tools }) => {
 
   app
     .route('/tools/:_id')
-    .get(async (req, res, next) => {
+    .get(logedIn, async (req, res, next) => {
       const { _id } = req.params
       // get one tool by id
       const tool = await Tools.findOne({ _id })
 
       return res.send(tool)
     })
-    .put(async (req, res) => {
+    .put(logedIn, async (req, res) => {
       const {
         params: { _id },
         body,
@@ -48,7 +56,7 @@ export default (app, { Tools }) => {
         return res.status(401).send(resp)
       }
     })
-    .delete(async (req, res) => {
+    .delete(logedIn, async (req, res) => {
       const {
         user,
         params: { _id },
