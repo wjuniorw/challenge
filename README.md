@@ -291,7 +291,7 @@ query byTags($tags: [String]){
 
 ---
 
-**query get one tool:**
+**query fetch one tool:**
 
 ```js
 //exemplo de uso no GraphQL Playground
