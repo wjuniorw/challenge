@@ -22,6 +22,7 @@ import resolvers from './resolvers'
 const context = ({ req, res }) => ({
   db,
   user: req.user,
+  secret: SECRET,
   token: req.headers['auth-token'],
 })
 
