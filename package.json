@@ -1,7 +1,7 @@
 {
-  "name": "bossabox-beckend-challenge",
+  "name": "bossabox-backend-challenge",
   "version": "1.0.0",
-  "description": "Desafio beck-end do bossabox",
+  "description": "Desafio back-end do bossabox",
   "main": "dist/index.js",
   "scripts": {
     "start": "nodemon --exec babel-node src",
