@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const DB_URI = process.env.DB_URI || 'mongodb://localhost/challenge'
+const DB_URI = process.env.DB_URI || 'mongodb://localhost:27017/challenge'
 
 mongoose.connect(
   DB_URI,
